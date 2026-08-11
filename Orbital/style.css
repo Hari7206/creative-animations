@@ -1,0 +1,81 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  background-color: black;
+}
+
+.crousel-scene{
+    height: 100vh;
+    width: 100%;
+   perspective: 1300px;
+}
+.crousel{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: spin 15s linear infinite;
+
+}
+
+
+.crousel-item{
+  height: 25%;
+  width: 9%;
+  position: absolute;
+}
+
+.crousel-item img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+   filter:
+        drop-shadow(0 0 4px rgba(255, 255, 255, 0.8))
+        drop-shadow(0 0 12px rgba(255, 255, 255, 0.35));
+}
+
+
+.crousel-item:nth-child(1){
+  transform: rotateY(0deg) translateZ(600px);
+ 
+}
+.crousel-item:nth-child(2){
+  transform: rotateY(45deg) translateZ(600px);
+}
+.crousel-item:nth-child(3){
+  transform: rotateY(90deg) translateZ(600px);
+}
+.crousel-item:nth-child(4){
+  transform: rotateY(135deg) translateZ(600px);
+}
+.crousel-item:nth-child(5){
+  transform: rotateY(180deg) translateZ(600px);
+}
+.crousel-item:nth-child(6){
+  transform: rotateY(225deg) translateZ(600px);
+}
+.crousel-item:nth-child(7){
+  transform: rotateY(270deg) translateZ(600px);
+}
+.crousel-item:nth-child(8){
+  transform: rotateY(315deg) translateZ(600px);
+}
+
+@keyframes spin {
+  from {
+    transform: rotateY(0);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}
