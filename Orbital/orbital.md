@@ -1,289 +1,270 @@
-# 🎨 CSS Animation — My First Project
+# 🌐 Orbital Animation
 
-> **My first project while learning CSS animations.**
+> **My First CSS Animation Project**
 
-This project is part of my journey of learning **web animations and creative frontend development using CSS**.
+This is my first project in my journey of learning **CSS animations**.
 
-The goal of this project was to understand how CSS can be used to create smooth, interactive, and visually engaging animations without relying on JavaScript animation libraries.
+I wanted to understand how far I could go with CSS alone, especially when it comes to **3D transformations and continuous motion**.
 
-This is my **first CSS animation project**, and I'm using it to experiment with concepts like `@keyframes`, `transform`, `transition`, `scale`, hover animations, `cubic-bezier`, and infinite animations.
+For this project, I created a 3D orbital/carousel effect where multiple images are positioned around an invisible circular axis and continuously rotate in 3D space.
+
+No JavaScript was used for the animation.
 
 ---
 
-## 🚀 Project Preview
+## 🎥 Project Preview
 
-![alt text](image.png)
+### Screenshot
 
-Add a screenshot of your project here:
+![main image](image-2.png)
 
-```md
-![Project Preview](./screenshots/project-preview.png)
+> 📌 Add a screenshot of your project inside a `screenshots` folder.
+
+For example:
+
+```text
+project/
+│
+├── index.html
+├── style.css
+├── screenshots/
+│   └── orbital-animation.png
+└── README.md
 ```
 
-> 📌 Replace the path above with the actual location of your screenshot.
+---
+
+# ✨ What Does This Project Do?
+
+The project places **8 images around a 3D circular structure**.
+
+Each image is rotated around the Y-axis and pushed away from the center using `translateZ()`.
+
+Then the entire carousel continuously rotates using a CSS `@keyframes` animation.
+
+The result looks like a 3D orbital carousel:
+
+```text
+                 🖼️
+           🖼️         🖼️
+
+      🖼️        ●        🖼️
+
+           🖼️         🖼️
+                 🖼️
+```
+
+The important thing is that the images aren't actually moving individually.
+
+Instead, they are positioned in **3D space**, and the parent container rotates.
 
 ---
 
-## 🎯 What I Wanted to Learn
+# 🧠 Main CSS Concepts I Learned
 
-For this first project, I focused on understanding:
+This project helped me understand several important CSS animation concepts:
 
-* CSS `@keyframes`
+* `perspective`
+* `transform-style: preserve-3d`
+* `rotateY()`
+* `translateZ()`
 * `transform`
-* `translateY()`
-* `translateX()`
-* `scale()`
-* CSS `transition`
-* Hover animations
-* Infinite animations
-* `cubic-bezier()` timing functions
-* Animation duration
-* `ease-out` and `linear`
-* Image animations
-* Text entrance animations
-* Creating a continuous marquee effect
-* Combining multiple animations on a webpage
+* `@keyframes`
+* `animation`
+* `position: absolute`
+* `nth-child()`
+* `linear`
+* `infinite`
+* 3D positioning
+
+These concepts are the main reason I built this project.
 
 ---
 
-# ✨ Animations Used
+# 🎭 1. Creating the 3D Scene
 
-## 1. Landing Image Animation
-
-One of the first animations I experimented with was animating an image from a larger scale back to its normal size.
+The first important part is creating a perspective for the scene.
 
 ```css
-@keyframes landing-page-animation {
+.crousel-scene {
+    height: 100vh;
+    width: 100%;
+    perspective: 1300px;
+}
+```
+
+The important property here is:
+
+```css
+perspective: 1300px;
+```
+
+### What does `perspective` do?
+
+Perspective controls how the browser renders objects in 3D space.
+
+You can think of it as controlling the distance between the viewer and the 3D scene.
+
+A smaller perspective can make the 3D effect feel stronger.
+
+A larger perspective makes the scene feel flatter.
+
+In this project, I used:
+
+```css
+perspective: 1300px;
+```
+
+to create a visible but smooth 3D effect.
+
+---
+
+# 🧊 2. Preserving 3D Space
+
+The carousel itself uses:
+
+```css
+.crousel {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    transform-style: preserve-3d;
+
+    animation: spin 15s linear infinite;
+}
+```
+
+The important property is:
+
+```css
+transform-style: preserve-3d;
+```
+
+Without this, the child elements may not behave as expected in 3D space.
+
+This tells the browser that the children of `.crousel` should maintain their 3D positioning.
+
+---
+
+# 🔄 3. Positioning the Images in a Circle
+
+This is probably the most important part of the project.
+
+Each image is positioned using:
+
+```css
+rotateY()
+```
+
+and
+
+```css
+translateZ()
+```
+
+For example:
+
+```css
+.crousel-item:nth-child(1) {
+    transform: rotateY(0deg) translateZ(600px);
+}
+```
+
+The next image:
+
+```css
+.crousel-item:nth-child(2) {
+    transform: rotateY(45deg) translateZ(600px);
+}
+```
+
+Then:
+
+```css
+.crousel-item:nth-child(3) {
+    transform: rotateY(90deg) translateZ(600px);
+}
+```
+
+And the pattern continues:
+
+```text
+0°
+45°
+90°
+135°
+180°
+225°
+270°
+315°
+```
+
+There are 8 images, so I divide the full `360°` circle into 8 equal sections.
+
+### The calculation
+
+```text
+360° ÷ 8 = 45°
+```
+
+That's why each item is separated by `45deg`.
+
+---
+
+# 📐 4. Understanding `translateZ()`
+
+Every carousel item has:
+
+```css
+translateZ(600px)
+```
+
+For example:
+
+```css
+transform: rotateY(90deg) translateZ(600px);
+```
+
+`translateZ()` moves an element forward or backward along the Z-axis.
+
+In this project, `600px` acts like the **radius of the carousel**.
+
+A larger value:
+
+```css
+translateZ(800px);
+```
+
+would make the circle larger.
+
+A smaller value:
+
+```css
+translateZ(400px);
+```
+
+would make the circle smaller.
+
+So this single value gives me control over the size of the orbital path.
+
+---
+
+# 🌀 5. Rotating the Whole Carousel
+
+Instead of individually animating all 8 images, I animate the parent container.
+
+```css
+@keyframes spin {
     from {
-        scale: 1.8;
+        transform: rotateY(0);
     }
 
     to {
-        scale: 1;
-    }
-}
-```
-
-The animation starts with the image at `1.8x` its original size and smoothly brings it back to its normal size.
-
-I used:
-
-```css
-animation: landing-page-animation 1.5s
-    cubic-bezier(0.165, 0.84, 0.44, 1);
-```
-
-### What I learned
-
-This helped me understand how `@keyframes` can control an animation from a starting state to an ending state.
-
----
-
-# 2. Text Entrance Animation
-
-I also experimented with bringing text onto the screen from below.
-
-```css
-@keyframes landing-text-animation {
-    from {
-        transform: translateY(120%);
-    }
-
-    to {
-        transform: translateY(0);
-    }
-}
-```
-
-The text starts below its normal position and moves upward into place.
-
-This was one of the most useful animations for me because the same technique can be used for:
-
-* Hero headings
-* Navigation elements
-* Page transitions
-* Cards
-* Section titles
-
----
-
-# 3. Fade-In Animation
-
-For smaller text elements, I used a simple opacity animation.
-
-```css
-@keyframes landing-para-animation {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-```
-
-This creates a simple **fade-in effect**.
-
-```css
-animation: landing-para-animation 1.8s ease-out;
-```
-
-### Concept
-
-`opacity: 0`
-
-→ element is invisible
-
-`opacity: 1`
-
-→ element becomes completely visible
-
-This was my introduction to combining **animation + timing functions**.
-
----
-
-# 4. Hover Image Zoom
-
-I used CSS transitions to create an image zoom effect when hovering over an image.
-
-```css
-.footer-img-div img {
-    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-}
-
-.footer-img-div:hover img {
-    scale: 1.25;
-}
-```
-
-When the user hovers over the image, it scales to `1.25`.
-
-The important part here is:
-
-```css
-transition: all 0.6s;
-```
-
-Unlike `@keyframes`, this animation happens when a property changes, such as during `:hover`.
-
----
-
-# 5. Image Saturation Animation
-
-I also experimented with changing the saturation of an image.
-
-Initially:
-
-```css
-filter: saturate(0);
-```
-
-On hover:
-
-```css
-filter: saturate(100%);
-```
-
-So the image starts almost grayscale and becomes colorful when hovered.
-
-```css
-.footer-img-div:hover img {
-    scale: 1.25;
-    filter: saturate(100%);
-}
-```
-
-This taught me that CSS animations aren't limited to movement.
-
-I can animate things like:
-
-* Scale
-* Position
-* Opacity
-* Filters
-* Colors
-* Transformations
-
----
-
-# 6. List Hover Animation
-
-For the list section, I experimented with moving images vertically.
-
-Initially:
-
-```css
-.list-img img {
-    transform: translateY(120%);
-}
-```
-
-When the parent element is hovered:
-
-```css
-.list-div:hover .list-img img {
-    transform: translateY(0%);
-}
-```
-
-This creates a reveal effect where the images move upward into view.
-
-I really liked this technique because it makes a normal list feel much more interactive.
-
----
-
-# 7. Navigation Hover Animation
-
-I also experimented with pseudo-elements.
-
-```css
-.nav-link::before {
-    content: "";
-    height: 10%;
-    width: 0.7vw;
-    transition: width 0.2s ease-out;
-    background-color: whitesmoke;
-}
-```
-
-On hover:
-
-```css
-.nav-link:hover::before {
-    width: 2vw;
-}
-```
-
-This creates a small animated indicator beside the navigation item.
-
-### What I learned
-
-Pseudo-elements such as:
-
-```css
-::before
-::after
-```
-
-can also be animated.
-
-This opened up a lot of possibilities for creating UI animations without adding extra HTML elements.
-
----
-
-# 8. Infinite Marquee Animation
-
-One of the most interesting things I experimented with was creating a continuously moving image track.
-
-```css
-@keyframes marque-animation {
-    from {
-        transform: translateX(0);
-    }
-
-    to {
-        transform: translateX(-100%);
+        transform: rotateY(360deg);
     }
 }
 ```
@@ -291,140 +272,165 @@ One of the most interesting things I experimented with was creating a continuous
 Then:
 
 ```css
-.marque-track {
-    animation: marque-animation 7s linear infinite;
+.crousel {
+    animation: spin 15s linear infinite;
 }
 ```
 
-The important part is:
+This means:
+
+```text
+0° → 360°
+```
+
+and then it starts again.
+
+The animation runs for:
+
+```text
+15 seconds
+```
+
+and repeats forever because of:
 
 ```css
 infinite
 ```
 
-Instead of stopping after one animation cycle, the animation keeps repeating.
+---
 
-And:
+# ⏱️ 6. Why `linear`?
+
+I used:
 
 ```css
-linear
+animation: spin 15s linear infinite;
 ```
 
-keeps the movement at a constant speed.
+The `linear` timing function means the animation maintains a constant speed.
 
-This helped me understand how CSS can create **continuous motion**.
+Without it, the animation could accelerate and decelerate depending on the timing function.
+
+For an orbital rotation, `linear` makes the movement feel continuous and mechanical.
 
 ---
 
-# 🧠 CSS Concepts I Learned
+# 🖼️ 7. Image Styling
 
-## `@keyframes`
-
-`@keyframes` allows me to define the different stages of an animation.
-
-Example:
+The images use:
 
 ```css
-@keyframes example {
-    from {
-        transform: translateY(100%);
-    }
-
-    to {
-        transform: translateY(0);
-    }
+.crousel-item img {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
 }
 ```
 
-Then I can use it with:
+I used `object-fit: contain` because the images have different shapes and transparent backgrounds.
 
-```css
-animation: example 1s ease-out;
-```
+This allows the images to fit inside their containers without being unnecessarily cropped.
 
 ---
 
-## `transform`
+# ✨ 8. Adding a Glow Effect
 
-I used transforms heavily throughout this project.
-
-Some examples:
+I also added a small glow around the images using `drop-shadow()`.
 
 ```css
-translateY()
-translateX()
-scale()
+filter:
+    drop-shadow(0 0 4px rgba(255, 255, 255, 0.8))
+    drop-shadow(0 0 12px rgba(255, 255, 255, 0.35));
 ```
 
-Transforms are extremely useful for animations because they allow elements to move and scale without changing their normal layout flow.
+This creates a subtle glowing effect around the transparent images.
+
+It also makes the objects stand out against the black background.
 
 ---
 
-## `transition`
+# 🧩 How Everything Works Together
 
-I used transitions for interactions such as hover effects.
+The animation can be understood in a few layers.
+
+### Layer 1 — Scene
 
 ```css
-transition: transform 0.5s ease;
+.crousel-scene {
+    perspective: 1300px;
+}
 ```
 
-Instead of instantly changing from one state to another, CSS smoothly interpolates between the two states.
+Creates the 3D viewing environment.
+
+↓
+
+### Layer 2 — Carousel
+
+```css
+.crousel {
+    transform-style: preserve-3d;
+    animation: spin 15s linear infinite;
+}
+```
+
+Creates the 3D object and rotates it.
+
+↓
+
+### Layer 3 — Items
+
+```css
+.crousel-item {
+    position: absolute;
+}
+```
+
+Allows the images to be positioned around the same center.
+
+↓
+
+### Layer 4 — 3D Position
+
+```css
+rotateY(...)
+translateZ(600px)
+```
+
+Places each image around the circular path.
+
+↓
+
+### Layer 5 — Animation
+
+```css
+@keyframes spin
+```
+
+Rotates the entire structure continuously.
 
 ---
 
-## `cubic-bezier()`
+# 📊 The 8 Positions
 
-I also started experimenting with custom timing functions.
+| Image | Rotation |
+| ----- | -------: |
+| 1     |   `0deg` |
+| 2     |  `45deg` |
+| 3     |  `90deg` |
+| 4     | `135deg` |
+| 5     | `180deg` |
+| 6     | `225deg` |
+| 7     | `270deg` |
+| 8     | `315deg` |
 
-For example:
-
-```css
-cubic-bezier(0.165, 0.84, 0.44, 1)
-```
-
-This controls **how the animation accelerates and decelerates**.
-
-This was an important discovery for me because the same animation can feel completely different depending on its timing function.
-
----
-
-# 🆚 `transition` vs `animation`
-
-One thing I learned from this project is the difference between transitions and keyframe animations.
-
-### Transition
-
-Usually useful for interaction:
+Each image also uses:
 
 ```css
-.element {
-    transition: transform 0.5s ease;
-}
-
-.element:hover {
-    transform: scale(1.2);
-}
+translateZ(600px)
 ```
 
-### Animation
-
-Useful when I want more control over the animation timeline:
-
-```css
-@keyframes move {
-    from {
-        transform: translateX(0);
-    }
-
-    to {
-        transform: translateX(-100%);
-    }
-}
-
-.element {
-    animation: move 7s linear infinite;
-}
-```
+So together they form the 3D ring.
 
 ---
 
@@ -432,94 +438,115 @@ Useful when I want more control over the animation timeline:
 
 * HTML5
 * CSS3
+* CSS 3D Transforms
 * CSS Animations
-* CSS Transforms
-* CSS Transitions
+* `@keyframes`
+* `perspective`
+* `transform-style`
+* `rotateY()`
+* `translateZ()`
 * CSS Filters
-* Google Fonts
 
-No JavaScript animation library was used for the animations.
+### JavaScript
+
+**None.**
+
+The entire animation is created using HTML and CSS.
 
 ---
 
 # 📸 Screenshots
 
-## Main View
+## Main Animation
 
-![Main View](./screenshots/main.png)
+![Main Animation](./screenshots/orbital-animation.png)
 
-## Hover Animation
+## 3D Structure
 
-![Hover Animation](./screenshots/hover.png)
+![3D Structure](./screenshots/3d-structure.png)
 
-## Marquee Animation
-
-![Marquee Animation](./screenshots/marquee.png)
-
-> Add your actual screenshots inside a `screenshots` folder and update these paths if necessary.
+> Add screenshots here as you continue experimenting with the project.
 
 ---
 
-# 📚 What I Learned From This Project
+# 💡 What I Learned
 
-This project was more than just creating a webpage for me.
+This project was my first real experiment with **CSS 3D animation**.
 
-It was my first real step into understanding **motion on the web**.
+The biggest thing I learned is that CSS isn't limited to simple things like:
 
-Before this project, CSS animations felt like something I could copy from tutorials.
+```css
+translateX()
+```
 
-While building this, I started understanding:
+or:
 
-* How animations are structured
-* How transforms work
-* How timing functions change the feel of an animation
-* How hover states can create interaction
-* How to create continuous animations
-* How to combine multiple animations on one page
-* How small animations can make a website feel more alive
+```css
+scale()
+```
 
-I still have a lot to learn, but this project gave me a starting point.
+CSS can also create surprisingly complex 3D effects using a combination of:
 
----
+```css
+perspective
++
+transform-style
++
+rotateY
++
+translateZ
++
+@keyframes
+```
 
-# 🧪 Things I Want to Explore Next
+The most interesting part for me was understanding that I don't need to animate every element individually.
 
-This is only the beginning of my animation journey.
-
-Next, I want to explore:
-
-* More advanced `cubic-bezier()` curves
-* CSS 3D transforms
-* `perspective`
-* `rotateX()`, `rotateY()` and `rotateZ()`
-* Scroll-based animations
-* Intersection Observer
-* SVG animations
-* Advanced image reveal animations
-* Text animations
-* GSAP
-* Framer Motion
-* WebGL / Three.js
-* Combining CSS and JavaScript for more complex interactions
+I can create a 3D structure first and then animate the **parent container**.
 
 ---
 
-# 🌱 My Animation Learning Journey
+# 🧪 Things I Want to Experiment With Next
 
-This project is my **first step into CSS animation**.
+There are still many things I want to improve in this project.
 
-I am keeping my animation projects in a separate repository so I can look back at my progress over time.
+Some ideas:
 
-The goal isn't to make every project perfect.
-
-The goal is to **build, experiment, understand, and improve with every project.**
-
-> **Project 01 — First step into CSS animation 🚀**
+* Make the carousel responsive
+* Change the radius dynamically
+* Add hover interactions
+* Pause the animation on hover
+* Make the carousel rotate based on mouse movement
+* Experiment with `rotateX()`
+* Add depth-based scaling
+* Add reflections
+* Experiment with different perspectives
+* Try making the carousel interactive with JavaScript
+* Recreate the effect using GSAP
 
 ---
 
-## ⭐ If You Like It
+# 🌱 My Animation Journey
 
-If you find the animation interesting, feel free to explore the code and experiment with it yourself.
+This project is **Project #01** in my CSS animation learning journey.
 
-More animation experiments will be added as I continue learning.
+I'm keeping my animation experiments in a separate repository so I can come back later and see how much I've improved.
+
+This project isn't meant to be a perfect production-ready component.
+
+It's a learning project.
+
+The goal is to understand **why the animation works**, not just copy the final code.
+
+> **Project #01 — Orbital CSS Animation 🚀**
+
+---
+
+## ⭐ Final Thought
+
+One small project at a time.
+
+One animation at a time.
+
+One new CSS property at a time.
+
+**This is where my animation journey begins.**
