@@ -459,11 +459,8 @@ The entire animation is created using HTML and CSS.
 
 ## Main Animation
 
-![Main Animation](./screenshots/orbital-animation.png)
+![main animation](image-3.png)
 
-## 3D Structure
-
-![3D Structure](./screenshots/3d-structure.png)
 
 > Add screenshots here as you continue experimenting with the project.
 
